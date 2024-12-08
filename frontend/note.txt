@@ -1,0 +1,10 @@
+clone this github repository
+
+git clone https://github.com/jmscalma/raspi_blocker.git
+
+to install the frontend
+use git bash
+cd raspi_blocker_frontend
+run "npm install"
+
+

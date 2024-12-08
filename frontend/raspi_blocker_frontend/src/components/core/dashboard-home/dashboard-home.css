@@ -1,0 +1,37 @@
+.stats {
+    margin-top: 200px;
+    display: flex;
+    gap: 2rem;
+    justify-content: space-evenly; /* Centers the cards evenly across the page */
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  }
+
+  .stat-card {
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Slightly more rounded corners for modern look */
+    padding: 20px;
+    width: 300px;
+    font-size: 26px;
+    text-align: center; /* Centers the text inside the card */
+    background-color: #fff; /* White background for clarity */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover transition */
+  }
+
+  .stat-card h3 {
+    font-size: 18px;
+    color: #444; /* Darker color for the title */
+    margin-bottom: 10px;
+  }
+  
+  .stat-card p {
+    font-size: 30px;
+    font-weight: bold;
+    color: #2d9cdb; /* Blue color for the count for better visibility */
+    margin: 0;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px); /* Lifts the card a bit */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Deeper shadow on hover */
+  }
