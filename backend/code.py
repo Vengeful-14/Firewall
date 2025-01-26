@@ -10,34 +10,43 @@ import os
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-cred = credentials.Certificate("/serviceAccountKey.json")
+cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()
 
 # to block URLs
-def block_urls(urls):
-    for url in urls:
-        command = f"echo 'ALL: {url}' >> /etc/hosts.deny"
-        os.system(command)
+def block_urls(ip_address):
+    for ipaddress in ip_address:
+        command = f"sudo ufw route deny to {ip_address}"
+        subprocess.run(command, shell=True, check=True)
+        print(f"Successfully blocked IP address: {ip_address}")
+        print(ipaddress)
 
 # to unblock URLs
-def unblock_urls(urls):
-    for url in urls:
-        command = f"sed -i '/ALL: {url}/d' /etc/hosts.deny"
-        os.system(command)
+def unblock_urls(ip_address):
+    for ipaddress in ip_address:
+        command = f"sudo ufw route allow from {ip_address}"
+        subprocess.run(command, shell=True, check=True)
+        print(f"Successfully blocked IP address: {ip_address}")
+        print(ipaddress)
 
 # to block ports
 def block_ports(ports):
     for port in ports:
-        command = f"iptables -A OUTPUT -p tcp --dport {port} -j REJECT"
-        os.system(command)
+        command = f"sudo ufw route deny proto tcp to any port {ports}"
+        print(f"Successfully blocked Port: {port}")
+        #command = f"sudo ufw route allow from {ip_address}"
+
+        print(ports)
+
 
 # to unblock ports
 def unblock_ports(ports):
     for port in ports:
-        command = f"iptables -D OUTPUT -p tcp --dport {port} -j REJECT"
-        os.system(command)
+        command = f"sudo ufw route allow proto tcp to any port {ports}"
+        print(f"Successfully blocked Port: {port}")
+        print(ports)
 
 # Ito yung function para maretrieve ni raspi ang chnages sa database
 def urls_listener_callback(col_snapshot, changes, read_time):
@@ -46,7 +55,7 @@ def urls_listener_callback(col_snapshot, changes, read_time):
 
     for change in changes:
         doc = change.document
-        url = doc.get("url_name")
+        url = doc.get("ipaddress")
 
         if change.type.name == "ADDED":
             added_urls.append(url)
@@ -90,7 +99,7 @@ def ports_listener_callback(col_snapshot, changes, read_time):
 
 def attach_listeners():
     # listeners para sa URLS
-    db.collection("URLs").on_snapshot(urls_listener_callback)
+    db.collection("ipaddress").on_snapshot(urls_listener_callback)
 
     # listeners para sa PORTs
     db.collection("PORTs").on_snapshot(ports_listener_callback)

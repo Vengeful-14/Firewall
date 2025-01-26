@@ -1,6 +1,13 @@
+
 .urls-container {
     padding: 20px;
   }
+
+.mybody{
+  display: flex;
+  width: 100%;
+  gap: 3em;
+}
   
   .add-url {
     /* display: flex; */
@@ -37,6 +44,7 @@
   
   .urls-list {
     margin-top: 20px;
+    width: 50%;
   }
   
   .urls-list ul {
